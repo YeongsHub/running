@@ -1,0 +1,38 @@
+{
+  "@@locale": "ko",
+
+  "navHome": "홈",
+  "navMap": "지도",
+  "navRun": "달리기",
+  "navHistory": "기록",
+  "navSettings": "설정",
+
+  "startRun": "달리기 시작",
+  "myStats": "내 기록",
+  "totalRuns": "총 달리기",
+  "totalRunsValue": "{count}회",
+  "totalDistance": "총 거리",
+  "totalArea": "확보 영역",
+  "statsLoadFailed": "통계 로드 실패",
+
+  "noRunsYet": "아직 달리기 기록이 없어요.\n달려서 땅을 차지해보세요!",
+  "errorMessage": "오류: {error}",
+
+  "territoryColor": "내 영역 색상",
+  "customColor": "직접 입력",
+  "customColorTitle": "색상 직접 선택",
+  "cancel": "취소",
+  "select": "선택",
+  "version": "버전",
+
+  "pause": "일시정지",
+  "resume": "재개",
+  "stop": "정지",
+  "endRunTitle": "달리기 종료",
+  "endRunMessage": "달리기를 종료하고 영역을 저장할까요?",
+  "save": "저장",
+
+  "distance": "거리",
+  "time": "시간",
+  "pace": "페이스"
+}

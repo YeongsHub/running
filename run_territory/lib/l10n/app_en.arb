@@ -1,0 +1,40 @@
+{
+  "@@locale": "en",
+
+  "navHome": "Home",
+  "navMap": "Map",
+  "navRun": "Run",
+  "navHistory": "History",
+  "navSettings": "Settings",
+
+  "startRun": "Start Run",
+  "myStats": "My Stats",
+  "totalRuns": "Total Runs",
+  "totalRunsValue": "{count} runs",
+  "@totalRunsValue": { "placeholders": { "count": { "type": "int" } } },
+  "totalDistance": "Total Distance",
+  "totalArea": "Territory Claimed",
+  "statsLoadFailed": "Failed to load stats",
+
+  "noRunsYet": "No runs yet.\nStart running to claim territory!",
+  "errorMessage": "Error: {error}",
+  "@errorMessage": { "placeholders": { "error": { "type": "Object" } } },
+
+  "territoryColor": "Territory Color",
+  "customColor": "Custom",
+  "customColorTitle": "Pick a Color",
+  "cancel": "Cancel",
+  "select": "Select",
+  "version": "Version",
+
+  "pause": "Pause",
+  "resume": "Resume",
+  "stop": "Stop",
+  "endRunTitle": "End Run",
+  "endRunMessage": "End run and save territory?",
+  "save": "Save",
+
+  "distance": "Distance",
+  "time": "Time",
+  "pace": "Pace"
+}

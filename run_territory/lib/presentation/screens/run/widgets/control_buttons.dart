@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:run_territory/domain/entities/run_session.dart';
+import 'package:run_territory/l10n/app_localizations.dart';
 import 'package:run_territory/presentation/screens/run/run_providers.dart';
 
 class ControlButtons extends ConsumerWidget {
@@ -8,13 +9,14 @@ class ControlButtons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context)!;
     final session = ref.watch(runSessionProvider);
     final notifier = ref.read(runSessionProvider.notifier);
     final status = session?.status;
 
     if (status == null || status == RunStatus.idle) {
       return _BigButton(
-        label: '달리기 시작',
+        label: l.startRun,
         icon: Icons.play_arrow,
         color: Colors.green,
         onTap: notifier.startRun,
@@ -25,22 +27,22 @@ class ControlButtons extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         if (status == RunStatus.running)
-          _BigButton(label: '일시정지', icon: Icons.pause, color: Colors.orange, onTap: notifier.pauseRun)
+          _BigButton(label: l.pause, icon: Icons.pause, color: Colors.orange, onTap: notifier.pauseRun)
         else
-          _BigButton(label: '재개', icon: Icons.play_arrow, color: Colors.green, onTap: notifier.resumeRun),
+          _BigButton(label: l.resume, icon: Icons.play_arrow, color: Colors.green, onTap: notifier.resumeRun),
         _BigButton(
-          label: '정지',
+          label: l.stop,
           icon: Icons.stop,
           color: Colors.red,
           onTap: () async {
             final confirm = await showDialog<bool>(
               context: context,
               builder: (ctx) => AlertDialog(
-                title: const Text('달리기 종료'),
-                content: const Text('달리기를 종료하고 영역을 저장할까요?'),
+                title: Text(l.endRunTitle),
+                content: Text(l.endRunMessage),
                 actions: [
-                  TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('취소')),
-                  FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('저장')),
+                  TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l.cancel)),
+                  FilledButton(onPressed: () => Navigator.pop(ctx, true), child: Text(l.save)),
                 ],
               ),
             );

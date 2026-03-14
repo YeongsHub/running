@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:run_territory/core/providers/app_providers.dart';
 import 'package:run_territory/core/utils/format_utils.dart';
 import 'package:run_territory/domain/entities/run_session.dart';
+import 'package:run_territory/l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
 final runHistoryProvider = FutureProvider<List<RunSession>>((ref) async {
@@ -14,13 +15,14 @@ class HistoryScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context)!;
     final historyAsync = ref.watch(runHistoryProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('기록')),
+      appBar: AppBar(title: Text(l.navHistory)),
       body: historyAsync.when(
         data: (sessions) {
           if (sessions.isEmpty) {
-            return const Center(child: Text('아직 달리기 기록이 없어요.\n달려서 땅을 차지해보세요!', textAlign: TextAlign.center));
+            return Center(child: Text(l.noRunsYet, textAlign: TextAlign.center));
           }
           return ListView.separated(
             padding: const EdgeInsets.all(16),
@@ -31,7 +33,7 @@ class HistoryScreen extends ConsumerWidget {
               return Card(
                 child: ListTile(
                   leading: const CircleAvatar(child: Icon(Icons.directions_run)),
-                  title: Text(DateFormat('M월 d일 (E)', 'ko').format(s.startedAt)),
+                  title: Text(DateFormat('M/d (E)').format(s.startedAt)),
                   subtitle: Text('${FormatUtils.formatDistance(s.totalDistance)} · ${FormatUtils.formatDuration(s.totalDuration)}'),
                   trailing: Text(FormatUtils.formatPace(s.avgPace), style: const TextStyle(fontWeight: FontWeight.bold)),
                 ),
@@ -40,7 +42,7 @@ class HistoryScreen extends ConsumerWidget {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('오류: $e')),
+        error: (e, _) => Center(child: Text(l.errorMessage(e))),
       ),
     );
   }

@@ -1,0 +1,38 @@
+{
+  "@@locale": "de",
+
+  "navHome": "Start",
+  "navMap": "Karte",
+  "navRun": "Laufen",
+  "navHistory": "Verlauf",
+  "navSettings": "Einstellungen",
+
+  "startRun": "Lauf starten",
+  "myStats": "Meine Statistiken",
+  "totalRuns": "Gesamte Läufe",
+  "totalRunsValue": "{count} Läufe",
+  "totalDistance": "Gesamtdistanz",
+  "totalArea": "Gewonnenes Gebiet",
+  "statsLoadFailed": "Statistiken konnten nicht geladen werden",
+
+  "noRunsYet": "Noch keine Läufe.\nLauf los und erobere Gebiete!",
+  "errorMessage": "Fehler: {error}",
+
+  "territoryColor": "Gebietsfarbe",
+  "customColor": "Benutzerdefiniert",
+  "customColorTitle": "Farbe auswählen",
+  "cancel": "Abbrechen",
+  "select": "Auswählen",
+  "version": "Version",
+
+  "pause": "Pause",
+  "resume": "Fortsetzen",
+  "stop": "Stopp",
+  "endRunTitle": "Lauf beenden",
+  "endRunMessage": "Lauf beenden und Gebiet speichern?",
+  "save": "Speichern",
+
+  "distance": "Distanz",
+  "time": "Zeit",
+  "pace": "Tempo"
+}

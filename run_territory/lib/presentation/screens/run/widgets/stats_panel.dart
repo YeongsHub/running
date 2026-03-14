@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:run_territory/core/utils/format_utils.dart';
 import 'package:run_territory/domain/entities/run_session.dart';
+import 'package:run_territory/l10n/app_localizations.dart';
 
 class StatsPanel extends StatelessWidget {
   final RunSession? session;
@@ -9,6 +10,7 @@ class StatsPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       decoration: BoxDecoration(
@@ -18,11 +20,11 @@ class StatsPanel extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _StatCol(label: '거리', value: FormatUtils.formatDistance(session?.totalDistance ?? 0)),
+          _StatCol(label: l.distance, value: FormatUtils.formatDistance(session?.totalDistance ?? 0)),
           _Divider(),
-          _StatCol(label: '시간', value: FormatUtils.formatDuration(session?.totalDuration ?? Duration.zero)),
+          _StatCol(label: l.time, value: FormatUtils.formatDuration(session?.totalDuration ?? Duration.zero)),
           _Divider(),
-          _StatCol(label: '페이스', value: FormatUtils.formatPace(session?.avgPace ?? 0)),
+          _StatCol(label: l.pace, value: FormatUtils.formatPace(session?.avgPace ?? 0)),
         ],
       ),
     );
