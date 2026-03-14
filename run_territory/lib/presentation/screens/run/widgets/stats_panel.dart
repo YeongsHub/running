@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:run_territory/core/providers/app_providers.dart';
 import 'package:run_territory/core/utils/format_utils.dart';
 import 'package:run_territory/domain/entities/run_session.dart';
 import 'package:run_territory/l10n/app_localizations.dart';
 
-class StatsPanel extends StatelessWidget {
+class StatsPanel extends ConsumerWidget {
   final RunSession? session;
 
   const StatsPanel({super.key, this.session});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
+    final imperial = ref.watch(useImperialProvider);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       decoration: BoxDecoration(
@@ -20,11 +23,14 @@ class StatsPanel extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _StatCol(label: l.distance, value: FormatUtils.formatDistance(session?.totalDistance ?? 0)),
+          _StatCol(label: l.distance, value: FormatUtils.formatDistance(session?.totalDistance ?? 0, imperial: imperial)),
           _Divider(),
           _StatCol(label: l.time, value: FormatUtils.formatDuration(session?.totalDuration ?? Duration.zero)),
           _Divider(),
-          _StatCol(label: l.pace, value: FormatUtils.formatPace(session?.avgPace ?? 0)),
+          _StatCol(
+            label: imperial ? l.paceUnitImperial : l.paceUnit,
+            value: FormatUtils.formatPace(session?.avgPace ?? 0, imperial: imperial),
+          ),
         ],
       ),
     );

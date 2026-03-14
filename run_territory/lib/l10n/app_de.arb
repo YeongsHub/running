@@ -34,5 +34,11 @@
 
   "distance": "Distanz",
   "time": "Zeit",
-  "pace": "Tempo"
+  "pace": "Tempo",
+
+  "unitSystem": "Einheitensystem",
+  "metric": "Metrisch (km, m)",
+  "imperial": "Imperial (mi, ft)",
+  "paceUnit": "min/km",
+  "paceUnitImperial": "min/mi"
 }

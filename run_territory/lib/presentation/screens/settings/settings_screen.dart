@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:run_territory/core/providers/app_providers.dart';
 import 'package:run_territory/l10n/app_localizations.dart';
 
 final userColorProvider = StateProvider<Color>((ref) => const Color(0xFF2E7D32));
@@ -19,31 +20,34 @@ class SettingsScreen extends ConsumerWidget {
     Color(0xFF3E2723), Color(0xFF4E342E), Color(0xFF546E7A), Color(0xFF607D8B), Color(0xFF90A4AE),
   ];
 
-  void _openColorPicker(BuildContext context, WidgetRef ref, Color current, AppLocalizations l) {
+  void _openColorPicker(BuildContext context, WidgetRef ref, Color current) {
     Color pickerColor = current;
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l.customColorTitle),
-        content: SingleChildScrollView(
-          child: ColorPicker(
-            pickerColor: pickerColor,
-            onColorChanged: (color) => pickerColor = color,
-            enableAlpha: false,
-            labelTypes: const [],
+      builder: (context) {
+        final l = AppLocalizations.of(context)!;
+        return AlertDialog(
+          title: Text(l.customColorTitle),
+          content: SingleChildScrollView(
+            child: ColorPicker(
+              pickerColor: pickerColor,
+              onColorChanged: (color) => pickerColor = color,
+              enableAlpha: false,
+              labelTypes: const [],
+            ),
           ),
-        ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: Text(l.cancel)),
-          TextButton(
-            onPressed: () {
-              ref.read(userColorProvider.notifier).state = pickerColor;
-              Navigator.pop(context);
-            },
-            child: Text(l.select),
-          ),
-        ],
-      ),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(context), child: Text(l.cancel)),
+            TextButton(
+              onPressed: () {
+                ref.read(userColorProvider.notifier).state = pickerColor;
+                Navigator.pop(context);
+              },
+              child: Text(l.select),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -76,7 +80,7 @@ class SettingsScreen extends ConsumerWidget {
               ),
               const Spacer(),
               TextButton.icon(
-                onPressed: () => _openColorPicker(context, ref, selectedColor, l),
+                onPressed: () => _openColorPicker(context, ref, selectedColor),
                 icon: const Icon(Icons.colorize, size: 18),
                 label: Text(l.customColor),
               ),
@@ -114,6 +118,21 @@ class SettingsScreen extends ConsumerWidget {
               );
             },
           ),
+          const SizedBox(height: 24),
+          const Divider(),
+          Text(l.unitSystem, style: Theme.of(context).textTheme.titleMedium),
+          const SizedBox(height: 8),
+          Builder(builder: (context) {
+            final isImperial = ref.watch(useImperialProvider);
+            return SegmentedButton<bool>(
+              segments: [
+                ButtonSegment(value: false, label: Text(l.metric), icon: const Icon(Icons.straighten)),
+                ButtonSegment(value: true, label: Text(l.imperial), icon: const Icon(Icons.flag)),
+              ],
+              selected: {isImperial},
+              onSelectionChanged: (v) => ref.read(useImperialProvider.notifier).state = v.first,
+            );
+          }),
           const SizedBox(height: 24),
           const Divider(),
           ListTile(

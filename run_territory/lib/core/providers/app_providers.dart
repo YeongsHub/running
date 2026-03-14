@@ -4,6 +4,7 @@ import 'package:run_territory/data/repositories/territory_repository_impl.dart';
 import 'package:run_territory/data/sources/local/database_helper.dart';
 import 'package:run_territory/data/sources/local/run_local_source.dart';
 import 'package:run_territory/data/sources/local/territory_local_source.dart';
+import 'package:run_territory/domain/entities/run_session.dart';
 import 'package:run_territory/domain/repositories/run_repository.dart';
 import 'package:run_territory/domain/repositories/territory_repository.dart';
 import 'package:run_territory/domain/usecases/claim_territory.dart';
@@ -34,3 +35,11 @@ final claimTerritoryUseCaseProvider = Provider<ClaimTerritoryUseCase>((ref) {
 final getMyTerritoriesUseCaseProvider = Provider<GetMyTerritoriesUseCase>((ref) {
   return GetMyTerritoriesUseCase(ref.watch(territoryRepositoryProvider));
 });
+
+// 전체 런 기록 — DB 쿼리를 한 번만 실행하고 캐싱
+final runHistoryProvider = FutureProvider<List<RunSession>>((ref) async {
+  return ref.watch(runRepositoryProvider).getAllSessions();
+});
+
+// false = 미터법(기본), true = 야드파운드법(미국)
+final useImperialProvider = StateProvider<bool>((ref) => false);

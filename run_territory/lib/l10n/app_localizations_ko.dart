@@ -98,4 +98,19 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get pace => '페이스';
+
+  @override
+  String get unitSystem => '단위 시스템';
+
+  @override
+  String get metric => '미터법 (km, m)';
+
+  @override
+  String get imperial => '야드파운드법 (mi, ft)';
+
+  @override
+  String get paceUnit => '분/km';
+
+  @override
+  String get paceUnitImperial => '분/mi';
 }

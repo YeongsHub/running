@@ -98,4 +98,19 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get pace => 'Tempo';
+
+  @override
+  String get unitSystem => 'Einheitensystem';
+
+  @override
+  String get metric => 'Metrisch (km, m)';
+
+  @override
+  String get imperial => 'Imperial (mi, ft)';
+
+  @override
+  String get paceUnit => 'min/km';
+
+  @override
+  String get paceUnitImperial => 'min/mi';
 }

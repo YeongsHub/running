@@ -34,5 +34,11 @@
 
   "distance": "거리",
   "time": "시간",
-  "pace": "페이스"
+  "pace": "페이스",
+
+  "unitSystem": "단위 시스템",
+  "metric": "미터법 (km, m)",
+  "imperial": "야드파운드법 (mi, ft)",
+  "paceUnit": "분/km",
+  "paceUnitImperial": "분/mi"
 }

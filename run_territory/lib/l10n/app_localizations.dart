@@ -273,6 +273,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pace'**
   String get pace;
+
+  /// No description provided for @unitSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit System'**
+  String get unitSystem;
+
+  /// No description provided for @metric.
+  ///
+  /// In en, this message translates to:
+  /// **'Metric (km, m)'**
+  String get metric;
+
+  /// No description provided for @imperial.
+  ///
+  /// In en, this message translates to:
+  /// **'Imperial (mi, ft)'**
+  String get imperial;
+
+  /// No description provided for @paceUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'min/km'**
+  String get paceUnit;
+
+  /// No description provided for @paceUnitImperial.
+  ///
+  /// In en, this message translates to:
+  /// **'min/mi'**
+  String get paceUnitImperial;
 }
 
 class _AppLocalizationsDelegate

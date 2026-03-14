@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:run_territory/app.dart';
 import 'package:run_territory/core/providers/app_providers.dart';
 import 'package:run_territory/core/utils/format_utils.dart';
@@ -7,9 +8,9 @@ import 'package:run_territory/l10n/app_localizations.dart';
 import 'package:run_territory/presentation/screens/profile/profile_screen.dart';
 import 'package:run_territory/presentation/screens/settings/settings_screen.dart';
 
-// 날짜별 km 합산 Provider (최근 16주)
+// runHistoryProvider 결과를 재사용 — DB 중복 쿼리 방지
 final dailyDistanceProvider = FutureProvider<Map<DateTime, double>>((ref) async {
-  final sessions = await ref.watch(runRepositoryProvider).getAllSessions();
+  final sessions = await ref.watch(runHistoryProvider.future);
   final map = <DateTime, double>{};
   for (final s in sessions) {
     final day = DateTime(s.startedAt.year, s.startedAt.month, s.startedAt.day);
@@ -24,6 +25,7 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
+    final imperial = ref.watch(useImperialProvider);
     final statsAsync = ref.watch(statsProvider);
 
     return Scaffold(
@@ -51,9 +53,9 @@ class HomeScreen extends ConsumerWidget {
               children: [
                 _QuickStat(label: l.totalRuns, value: l.totalRunsValue(stats.totalRuns)),
                 const SizedBox(height: 8),
-                _QuickStat(label: l.totalDistance, value: '${stats.totalDistanceKm.toStringAsFixed(1)}km'),
+                _QuickStat(label: l.totalDistance, value: FormatUtils.formatTotalDistance(stats.totalDistanceKm, imperial: imperial)),
                 const SizedBox(height: 8),
-                _QuickStat(label: l.totalArea, value: FormatUtils.formatArea(stats.totalAreaM2)),
+                _QuickStat(label: l.totalArea, value: FormatUtils.formatArea(stats.totalAreaM2, imperial: imperial)),
               ],
             ),
             loading: () => const CircularProgressIndicator(),
@@ -69,10 +71,10 @@ class RunContributionGraph extends ConsumerWidget {
   const RunContributionGraph({super.key});
 
   static const int _weeks = 16;
-  static const double _cellSize = 13.0;
-  static const double _cellGap = 2.5;
+  static const double _cellSize = 12.0;
+  static const double _cellGap = 4.0; // 반드시 짝수 — margin: _cellGap/2 = 2.0 (정수 픽셀)
 
-  Color _cellColor(double km, Color base) {
+  static Color _cellColor(double km, Color base) {
     if (km == 0) return Colors.grey.shade200;
     if (km <= 5) return base.withValues(alpha: 0.25);
     if (km <= 10) return base.withValues(alpha: 0.5);
@@ -137,7 +139,7 @@ class RunContributionGraph extends ConsumerWidget {
       final weekEnd = weekStart.add(const Duration(days: 6));
       if (w == 0 || weekStart.month != weekEnd.month || weekStart.day <= 7) {
         final date = w == 0 ? weekStart : weekEnd;
-        if (w == 0 || monthLabels.values.last != _monthLabel(date)) {
+        if (w == 0 || monthLabels.isEmpty || monthLabels.values.last != _monthLabel(date)) {
           monthLabels[w] = _monthLabel(date);
         }
       }
@@ -163,7 +165,7 @@ class RunContributionGraph extends ConsumerWidget {
               )),
             ],
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: _cellGap),
           // 주 컬럼들
           ...List.generate(_weeks, (w) {
             return Column(
@@ -203,10 +205,7 @@ class RunContributionGraph extends ConsumerWidget {
     );
   }
 
-  String _monthLabel(DateTime date) {
-    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    return months[date.month - 1];
-  }
+  static String _monthLabel(DateTime date) => DateFormat('MMM').format(date);
 }
 
 class _QuickStat extends StatelessWidget {
