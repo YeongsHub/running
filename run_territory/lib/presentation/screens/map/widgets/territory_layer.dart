@@ -13,7 +13,7 @@ class TerritoryLayer extends StatelessWidget {
     return PolygonLayer(
       polygons: territories.map((t) => Polygon(
         points: t.polygon.map((p) => LatLng(p.latitude, p.longitude)).toList(),
-        color: t.color.withOpacity(0.3),
+        color: t.color.withValues(alpha: 0.3),
         borderColor: t.color,
         borderStrokeWidth: 2.0,
       )).toList(),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:run_territory/core/providers/app_providers.dart';
 import 'package:run_territory/domain/entities/gps_point.dart';
 import 'package:run_territory/domain/entities/run_session.dart';
+import 'package:run_territory/core/utils/geo_utils.dart';
 import 'package:run_territory/presentation/screens/map/map_providers.dart';
 import 'package:uuid/uuid.dart';
 
@@ -47,12 +48,17 @@ class RunSessionNotifier extends StateNotifier<RunSession?> {
       _distance += dist;
     }
     _lastPoint = point;
-    final newPath = [...(state?.path ?? []), point];
+    final newPath = <GpsPoint>[...(state?.path ?? []), point];
     state = state?.copyWith(
       path: newPath,
       totalDistance: _distance,
       totalDuration: _elapsed,
     );
+
+    // 루프 감지: 시작점에서 10m 이내로 돌아오면 자동 종료
+    if (GeoUtils.detectLoop(newPath)) {
+      stopAndSave();
+    }
   }
 
   void pauseRun() {

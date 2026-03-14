@@ -16,7 +16,7 @@ class TerritoryLocalSource {
       'session_id': territory.runSessionId,
       'polygon': territory.toGeoJsonString(),
       'area_m2': territory.areaM2,
-      'color_hex': '#${territory.color.value.toRadixString(16).padLeft(8, '0')}',
+      'color_hex': '#${territory.color.toARGB32().toRadixString(16).padLeft(8, '0')}',
       'claimed_at': territory.claimedAt.millisecondsSinceEpoch,
     }, conflictAlgorithm: ConflictAlgorithm.replace);
   }

@@ -189,4 +189,19 @@ class GeoUtils {
     return (A.longitude - O.longitude) * (B.latitude - O.latitude) -
         (A.latitude - O.latitude) * (B.longitude - O.longitude);
   }
+
+  // 루프 감지: 현재 마지막 포인트가 시작점으로부터 thresholdMeters 이내인지 확인
+  // 최소 20포인트 이상이어야 루프로 인정 (너무 짧은 경로 방지)
+  static bool detectLoop(List<GpsPoint> path, {double thresholdMeters = 10.0}) {
+    if (path.length < 20) return false;
+    final start = path.first;
+    final current = path.last;
+    return haversineDistance(start, current) <= thresholdMeters;
+  }
+
+  // 루프 경로를 폴리곤으로 변환 (버퍼링 없이 경로 자체를 폴리곤으로)
+  static List<GpsPoint> pathToEnclosedPolygon(List<GpsPoint> path) {
+    if (path.length < 3) return path;
+    return simplifyPath(path, epsilon: 2.0);
+  }
 }

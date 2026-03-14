@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:run_territory/core/constants/map_constants.dart';
 import 'package:run_territory/presentation/screens/map/map_providers.dart';
-import 'package:run_territory/presentation/screens/map/widgets/run_path_layer.dart';
 import 'package:run_territory/presentation/screens/map/widgets/territory_layer.dart';
 
 class MapScreen extends ConsumerWidget {

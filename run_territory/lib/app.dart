@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:run_territory/core/theme/app_theme.dart';
+import 'package:run_territory/presentation/screens/home/home_screen.dart';
 import 'package:run_territory/presentation/screens/map/map_screen.dart';
 import 'package:run_territory/presentation/screens/run/run_screen.dart';
 import 'package:run_territory/presentation/screens/history/history_screen.dart';
-import 'package:run_territory/presentation/screens/profile/profile_screen.dart';
+import 'package:run_territory/presentation/screens/settings/settings_screen.dart';
 
 final selectedTabProvider = StateProvider<int>((ref) => 0);
 
@@ -25,10 +26,11 @@ class MainShell extends ConsumerWidget {
   const MainShell({super.key});
 
   static const List<Widget> _screens = [
+    HomeScreen(),
     MapScreen(),
     RunScreen(),
     HistoryScreen(),
-    ProfileScreen(),
+    SettingsScreen(),
   ];
 
   @override
@@ -44,10 +46,11 @@ class MainShell extends ConsumerWidget {
         onDestinationSelected: (index) =>
             ref.read(selectedTabProvider.notifier).state = index,
         destinations: const [
+          NavigationDestination(icon: Icon(Icons.home), label: '홈'),
           NavigationDestination(icon: Icon(Icons.map), label: '지도'),
           NavigationDestination(icon: Icon(Icons.directions_run), label: '달리기'),
           NavigationDestination(icon: Icon(Icons.history), label: '기록'),
-          NavigationDestination(icon: Icon(Icons.person), label: '프로필'),
+          NavigationDestination(icon: Icon(Icons.settings), label: '설정'),
         ],
       ),
     );

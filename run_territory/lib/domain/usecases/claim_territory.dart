@@ -18,7 +18,7 @@ class ClaimTerritoryUseCase {
   }) async {
     if (path.length < 2) return null;
 
-    final polygon = GeoUtils.pathToPolygon(path, bufferMeters: 5.0);
+    final polygon = GeoUtils.pathToEnclosedPolygon(path);
     final area = GeoUtils.calculateAreaM2(polygon);
 
     final existing = await _repo.getMyTerritories();
