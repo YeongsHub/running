@@ -1,7 +1,7 @@
 name: run_territory
 description: "Running territory tracking app - claim land by running"
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
