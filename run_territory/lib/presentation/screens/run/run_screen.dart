@@ -75,7 +75,7 @@ class _RunScreenState extends ConsumerState<RunScreen> {
                   children: [
                     TileLayer(
                       urlTemplate: MapConstants.osmTileUrl,
-                      userAgentPackageName: 'com.runningapp.run_territory',
+                      userAgentPackageName: 'com.gridnflow.rundone',
                     ),
                     if (session != null) RunPathLayer(path: session.path),
                     positionAsync.when(

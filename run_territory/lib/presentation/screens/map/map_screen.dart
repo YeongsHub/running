@@ -66,7 +66,7 @@ class MapScreen extends ConsumerWidget {
             children: [
               TileLayer(
                 urlTemplate: MapConstants.osmTileUrl,
-                userAgentPackageName: 'com.runningapp.run_territory',
+                userAgentPackageName: 'com.gridnflow.rundone',
               ),
               territoriesAsync.when(
                 data: (territories) => TerritoryLayer(territories: territories, colorOverride: userColor),

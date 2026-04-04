@@ -68,7 +68,7 @@ class RunCompleteScreen extends ConsumerWidget {
                       TileLayer(
                         urlTemplate: MapConstants.osmTileUrl,
                         userAgentPackageName:
-                            'com.runningapp.run_territory',
+                            'com.gridnflow.rundone',
                       ),
                       // 폴리곤 (territory)
                       PolygonLayer(

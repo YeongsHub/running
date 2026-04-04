@@ -8,15 +8,28 @@ import 'package:run_territory/core/utils/format_utils.dart';
 import 'package:run_territory/l10n/app_localizations.dart';
 import 'package:run_territory/presentation/screens/settings/settings_screen.dart';
 
-// runHistoryProvider 결과를 재사용 — DB 중복 쿼리 방지
-final dailyDistanceProvider = FutureProvider<Map<DateTime, double>>((ref) async {
+// 날짜별 {거리(km), 횟수} 집계 — DB 중복 쿼리 방지
+class DailyActivity {
+  final double km;
+  final int count;
+  const DailyActivity({required this.km, required this.count});
+}
+
+final dailyActivityProvider = FutureProvider<Map<DateTime, DailyActivity>>((ref) async {
   final sessions = await ref.watch(runHistoryProvider.future);
-  final map = <DateTime, double>{};
+  final map = <DateTime, DailyActivity>{};
   for (final s in sessions) {
     final day = DateTime(s.startedAt.year, s.startedAt.month, s.startedAt.day);
-    map[day] = (map[day] ?? 0) + s.totalDistance / 1000;
+    final prev = map[day] ?? const DailyActivity(km: 0, count: 0);
+    map[day] = DailyActivity(km: prev.km + s.totalDistance / 1000, count: prev.count + 1);
   }
   return map;
+});
+
+// 하위 호환 — dailyDistanceProvider 대신 dailyActivityProvider 사용
+final dailyDistanceProvider = FutureProvider<Map<DateTime, double>>((ref) async {
+  final activity = await ref.watch(dailyActivityProvider.future);
+  return activity.map((k, v) => MapEntry(k, v.km));
 });
 
 class HomeScreen extends ConsumerWidget {
@@ -264,17 +277,23 @@ class RunContributionGraph extends ConsumerWidget {
   static const double _cellSize = 12.0;
   static const double _cellGap = 4.0;
 
-  static Color _cellColor(double km, Color base) {
-    if (km == 0) return AppTheme.surfaceContainerHighest;
-    if (km <= 5) return base.withValues(alpha: 0.25);
-    if (km <= 10) return base.withValues(alpha: 0.5);
-    if (km <= 15) return base.withValues(alpha: 0.75);
-    return base;
+  // 횟수 기준: 1회=연하게, 여러번=진하게 / 거리로 최소 밝기 보정
+  static Color _cellColor(DailyActivity? activity, Color base) {
+    if (activity == null || activity.count == 0) return AppTheme.surfaceContainerHighest;
+    final countAlpha = switch (activity.count) {
+      1 => 0.3,
+      2 => 0.6,
+      3 => 0.85,
+      _ => 1.0, // 4회 이상
+    };
+    // 거리도 고려해 더 밝아지지 않도록 max 적용
+    final distAlpha = activity.km <= 5 ? 0.3 : activity.km <= 10 ? 0.6 : activity.km <= 15 ? 0.85 : 1.0;
+    return base.withValues(alpha: countAlpha > distAlpha ? countAlpha : distAlpha);
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dailyAsync = ref.watch(dailyDistanceProvider);
+    final dailyAsync = ref.watch(dailyActivityProvider);
     final baseColor = ref.watch(userColorProvider);
 
     return Column(
@@ -307,7 +326,7 @@ class RunContributionGraph extends ConsumerWidget {
         ),
         const SizedBox(height: 8),
         dailyAsync.when(
-          data: (dailyKm) => _buildGrid(context, dailyKm, baseColor),
+          data: (dailyActivity) => _buildGrid(context, dailyActivity, baseColor),
           loading: () => const SizedBox(
               height: 100, child: Center(child: CircularProgressIndicator())),
           error: (_, __) => const SizedBox.shrink(),
@@ -317,7 +336,7 @@ class RunContributionGraph extends ConsumerWidget {
   }
 
   Widget _buildGrid(
-      BuildContext context, Map<DateTime, double> dailyKm, Color baseColor) {
+      BuildContext context, Map<DateTime, DailyActivity> dailyKm, Color baseColor) {
     final today = DateTime.now();
     final todayDate = DateTime(today.year, today.month, today.day);
     final daysBack = (todayDate.weekday - 1) + (_weeks - 1) * 7;
@@ -373,10 +392,13 @@ class RunContributionGraph extends ConsumerWidget {
                 ...List.generate(7, (d) {
                   final date = startDate.add(Duration(days: w * 7 + d));
                   final isFuture = date.isAfter(todayDate);
-                  final km = isFuture ? 0.0 : (dailyKm[date] ?? 0.0);
+                  final activity = isFuture ? null : dailyKm[date];
+                  final km = activity?.km ?? 0.0;
+                  final count = activity?.count ?? 0;
                   return Tooltip(
-                    message:
-                        '${date.month}/${date.day}  ${km > 0 ? "${km.toStringAsFixed(1)}km" : ""}',
+                    message: '${date.month}/${date.day}'
+                        '${km > 0 ? "  ${km.toStringAsFixed(1)}km" : ""}'
+                        '${count > 1 ? " (${count}x)" : ""}',
                     child: Container(
                       width: _cellSize,
                       height: _cellSize,
@@ -384,7 +406,7 @@ class RunContributionGraph extends ConsumerWidget {
                       decoration: BoxDecoration(
                         color: isFuture
                             ? Colors.transparent
-                            : _cellColor(km, baseColor),
+                            : _cellColor(activity, baseColor),
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
