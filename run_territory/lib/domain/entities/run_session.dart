@@ -1,6 +1,6 @@
 import 'package:run_territory/domain/entities/gps_point.dart';
 
-enum RunStatus { idle, running, paused, completed }
+enum RunStatus { idle, running, paused, loopCompleted, completed }
 
 class RunSession {
   final String id;

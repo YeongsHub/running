@@ -2,7 +2,7 @@
   "@@locale": "ko",
 
   "navHome": "홈",
-  "navMap": "지도",
+  "navMap": "내 영역",
   "navRun": "달리기",
   "navHistory": "기록",
   "navSettings": "설정",
@@ -40,5 +40,31 @@
   "metric": "미터법 (km, m)",
   "imperial": "야드파운드법 (mi, ft)",
   "paceUnit": "분/km",
-  "paceUnitImperial": "분/mi"
+  "paceUnitImperial": "분/mi",
+
+  "planFree": "Free",
+  "planPro": "Pro",
+  "upgradeToPro": "Pro로 업그레이드",
+  "proFeatures": "Pro 기능",
+  "proFeatureMultiplayer": "멀티플레이어 지도",
+  "proFeatureMultiplayerDesc": "다른 플레이어의 영역을 실시간으로 확인",
+  "proFeatureLeaderboard": "리더보드",
+  "proFeatureLeaderboardDesc": "전 세계 유저와 영역 넓이로 경쟁",
+  "proFeatureCloudSync": "클라우드 동기화",
+  "proFeatureCloudSyncDesc": "기기 간 달리기 기록과 영역을 백업",
+  "proFeatureFriends": "친구",
+  "proFeatureFriendsDesc": "친구와 영역 경쟁",
+  "proPrice": "Pro 잠금 해제 — ₩6,900 (1회 결제)",
+  "proUpgradeConfirmTitle": "Pro로 업그레이드?",
+  "proUpgradeConfirmMessage": "시뮬레이션 결제입니다. 확인을 누르면 Pro 기능이 모두 활성화됩니다.",
+  "confirm": "확인",
+  "proUnlocked": "Pro 활성화! 모든 기능을 즐기세요.",
+  "proAlreadyOwned": "이미 Pro를 보유하고 있습니다.",
+  "proLockedHint": "Pro 기능 — 업그레이드하려면 탭하세요",
+  "currentPlan": "현재 플랜",
+
+  "territoryClaimed": "영역 확보 완료!",
+  "areaLabel": "면적",
+  "done": "완료",
+  "loopCompleted": "루프 완주!"
 }

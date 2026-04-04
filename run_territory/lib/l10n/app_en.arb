@@ -2,7 +2,7 @@
   "@@locale": "en",
 
   "navHome": "Home",
-  "navMap": "Map",
+  "navMap": "My Territory",
   "navRun": "Run",
   "navHistory": "History",
   "navSettings": "Settings",
@@ -42,5 +42,31 @@
   "metric": "Metric (km, m)",
   "imperial": "Imperial (mi, ft)",
   "paceUnit": "min/km",
-  "paceUnitImperial": "min/mi"
+  "paceUnitImperial": "min/mi",
+
+  "planFree": "Free",
+  "planPro": "Pro",
+  "upgradeToPro": "Upgrade to Pro",
+  "proFeatures": "Pro Features",
+  "proFeatureMultiplayer": "Multiplayer Map",
+  "proFeatureMultiplayerDesc": "See other players' territories in real time",
+  "proFeatureLeaderboard": "Leaderboards",
+  "proFeatureLeaderboardDesc": "Compete globally and rank by territory area",
+  "proFeatureCloudSync": "Cloud Sync",
+  "proFeatureCloudSyncDesc": "Back up your runs and territories across devices",
+  "proFeatureFriends": "Friends",
+  "proFeatureFriendsDesc": "Challenge friends and see their territories",
+  "proPrice": "Unlock Pro — $4.99 (one-time)",
+  "proUpgradeConfirmTitle": "Upgrade to Pro?",
+  "proUpgradeConfirmMessage": "This is a simulated purchase. Tap Confirm to unlock all Pro features.",
+  "confirm": "Confirm",
+  "proUnlocked": "Pro unlocked! Enjoy all features.",
+  "proAlreadyOwned": "You already own Pro.",
+  "proLockedHint": "Pro feature — tap to upgrade",
+  "currentPlan": "Current Plan",
+
+  "territoryClaimed": "Territory Claimed!",
+  "areaLabel": "Area",
+  "done": "Done",
+  "loopCompleted": "Loop Completed!"
 }

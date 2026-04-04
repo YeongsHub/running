@@ -18,7 +18,9 @@ class RunTerritoryApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       title: 'Run Territory',
-      theme: AppTheme.light,
+      theme: AppTheme.dark,
+      darkTheme: AppTheme.dark,
+      themeMode: ThemeMode.dark,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -57,7 +59,7 @@ class MainShell extends ConsumerWidget {
             ref.read(selectedTabProvider.notifier).state = index,
         destinations: [
           NavigationDestination(icon: const Icon(Icons.home), label: l.navHome),
-          NavigationDestination(icon: const Icon(Icons.map), label: l.navMap),
+          NavigationDestination(icon: const Icon(Icons.terrain), label: l.navMap),
           NavigationDestination(icon: const Icon(Icons.directions_run), label: l.navRun),
           NavigationDestination(icon: const Icon(Icons.history), label: l.navHistory),
           NavigationDestination(icon: const Icon(Icons.settings), label: l.navSettings),

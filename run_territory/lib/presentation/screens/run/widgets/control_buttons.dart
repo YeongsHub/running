@@ -23,6 +23,11 @@ class ControlButtons extends ConsumerWidget {
       );
     }
 
+    // loopCompleted 상태에서는 버튼 숨김 (결과 화면으로 전환 중)
+    if (status == RunStatus.loopCompleted) {
+      return const SizedBox.shrink();
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [

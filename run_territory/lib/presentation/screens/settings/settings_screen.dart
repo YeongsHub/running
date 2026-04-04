@@ -3,6 +3,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:run_territory/core/providers/app_providers.dart';
 import 'package:run_territory/l10n/app_localizations.dart';
+import 'package:run_territory/presentation/screens/pro/upgrade_screen.dart';
 
 final userColorProvider = StateProvider<Color>((ref) => const Color(0xFF2E7D32));
 
@@ -61,64 +62,71 @@ class SettingsScreen extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Text(l.territoryColor, style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(height: 8),
-          Row(
+          ExpansionTile(
+            tilePadding: EdgeInsets.zero,
+            childrenPadding: EdgeInsets.zero,
+            leading: Container(
+              width: 28,
+              height: 28,
+              decoration: BoxDecoration(
+                color: selectedColor,
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.black26, width: 1),
+              ),
+            ),
+            title: Text(l.territoryColor, style: Theme.of(context).textTheme.titleMedium),
             children: [
-              Container(
-                width: 40, height: 40,
-                decoration: BoxDecoration(
-                  color: selectedColor,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.black26, width: 1),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Text(
+                    '#${selectedColor.toARGB32().toRadixString(16).substring(2).toUpperCase()}',
+                    style: const TextStyle(fontFamily: 'monospace', fontSize: 14),
+                  ),
+                  const Spacer(),
+                  TextButton.icon(
+                    onPressed: () => _openColorPicker(context, ref, selectedColor),
+                    icon: const Icon(Icons.colorize, size: 18),
+                    label: Text(l.customColor),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 8,
+                  mainAxisSpacing: 8,
+                  crossAxisSpacing: 8,
                 ),
+                itemCount: paletteColors.length,
+                itemBuilder: (context, index) {
+                  final color = paletteColors[index];
+                  final isSelected = selectedColor.toARGB32() == color.toARGB32();
+                  return GestureDetector(
+                    onTap: () => ref.read(userColorProvider.notifier).state = color,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: color,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: isSelected ? Colors.black : Colors.transparent,
+                          width: 2.5,
+                        ),
+                        boxShadow: isSelected
+                            ? [BoxShadow(color: color.withValues(alpha: 0.6), blurRadius: 6, spreadRadius: 1)]
+                            : null,
+                      ),
+                      child: isSelected ? const Icon(Icons.check, color: Colors.white, size: 16) : null,
+                    ),
+                  );
+                },
               ),
-              const SizedBox(width: 12),
-              Text(
-                '#${selectedColor.toARGB32().toRadixString(16).substring(2).toUpperCase()}',
-                style: const TextStyle(fontFamily: 'monospace', fontSize: 14),
-              ),
-              const Spacer(),
-              TextButton.icon(
-                onPressed: () => _openColorPicker(context, ref, selectedColor),
-                icon: const Icon(Icons.colorize, size: 18),
-                label: Text(l.customColor),
-              ),
+              const SizedBox(height: 16),
             ],
           ),
-          const SizedBox(height: 16),
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 8,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
-            ),
-            itemCount: paletteColors.length,
-            itemBuilder: (context, index) {
-              final color = paletteColors[index];
-              final isSelected = selectedColor.toARGB32() == color.toARGB32();
-              return GestureDetector(
-                onTap: () => ref.read(userColorProvider.notifier).state = color,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: color,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: isSelected ? Colors.black : Colors.transparent,
-                      width: 2.5,
-                    ),
-                    boxShadow: isSelected
-                        ? [BoxShadow(color: color.withValues(alpha: 0.6), blurRadius: 6, spreadRadius: 1)]
-                        : null,
-                  ),
-                  child: isSelected ? const Icon(Icons.check, color: Colors.white, size: 16) : null,
-                ),
-              );
-            },
-          ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 8),
           const Divider(),
           Text(l.unitSystem, style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 8),
@@ -135,13 +143,43 @@ class SettingsScreen extends ConsumerWidget {
           }),
           const SizedBox(height: 24),
           const Divider(),
+          const _PlanTile(),
+          const SizedBox(height: 8),
           ListTile(
             leading: const Icon(Icons.info_outline),
             title: Text(l.version),
-            trailing: const Text('1.0.0 (Free)'),
+            trailing: const Text('1.0.0'),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _PlanTile extends ConsumerWidget {
+  const _PlanTile();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context)!;
+    final isProAsync = ref.watch(isProProvider);
+    final isPro = isProAsync.valueOrNull ?? false;
+
+    return ListTile(
+      leading: Icon(
+        isPro ? Icons.workspace_premium : Icons.lock_open,
+        color: isPro ? Colors.amber : null,
+      ),
+      title: Text(l.currentPlan),
+      trailing: isPro
+          ? Chip(
+              label: Text(l.planPro, style: const TextStyle(fontWeight: FontWeight.bold)),
+              backgroundColor: Colors.amber.shade100,
+            )
+          : FilledButton.tonal(
+              onPressed: () => UpgradeScreen.show(context),
+              child: Text(l.upgradeToPro),
+            ),
     );
   }
 }

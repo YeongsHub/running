@@ -12,7 +12,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get navHome => '홈';
 
   @override
-  String get navMap => '지도';
+  String get navMap => '내 영역';
 
   @override
   String get navRun => '달리기';
@@ -113,4 +113,77 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get paceUnitImperial => '분/mi';
+
+  @override
+  String get planFree => 'Free';
+
+  @override
+  String get planPro => 'Pro';
+
+  @override
+  String get upgradeToPro => 'Pro로 업그레이드';
+
+  @override
+  String get proFeatures => 'Pro 기능';
+
+  @override
+  String get proFeatureMultiplayer => '멀티플레이어 지도';
+
+  @override
+  String get proFeatureMultiplayerDesc => '다른 플레이어의 영역을 실시간으로 확인';
+
+  @override
+  String get proFeatureLeaderboard => '리더보드';
+
+  @override
+  String get proFeatureLeaderboardDesc => '전 세계 유저와 영역 넓이로 경쟁';
+
+  @override
+  String get proFeatureCloudSync => '클라우드 동기화';
+
+  @override
+  String get proFeatureCloudSyncDesc => '기기 간 달리기 기록과 영역을 백업';
+
+  @override
+  String get proFeatureFriends => '친구';
+
+  @override
+  String get proFeatureFriendsDesc => '친구와 영역 경쟁';
+
+  @override
+  String get proPrice => 'Pro 잠금 해제 — ₩6,900 (1회 결제)';
+
+  @override
+  String get proUpgradeConfirmTitle => 'Pro로 업그레이드?';
+
+  @override
+  String get proUpgradeConfirmMessage =>
+      '시뮬레이션 결제입니다. 확인을 누르면 Pro 기능이 모두 활성화됩니다.';
+
+  @override
+  String get confirm => '확인';
+
+  @override
+  String get proUnlocked => 'Pro 활성화! 모든 기능을 즐기세요.';
+
+  @override
+  String get proAlreadyOwned => '이미 Pro를 보유하고 있습니다.';
+
+  @override
+  String get proLockedHint => 'Pro 기능 — 업그레이드하려면 탭하세요';
+
+  @override
+  String get currentPlan => '현재 플랜';
+
+  @override
+  String get territoryClaimed => '영역 확보 완료!';
+
+  @override
+  String get areaLabel => '면적';
+
+  @override
+  String get done => '완료';
+
+  @override
+  String get loopCompleted => '루프 완주!';
 }

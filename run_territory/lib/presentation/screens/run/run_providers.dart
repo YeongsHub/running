@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:run_territory/core/providers/app_providers.dart';
 import 'package:run_territory/domain/entities/gps_point.dart';
@@ -55,9 +56,12 @@ class RunSessionNotifier extends StateNotifier<RunSession?> {
       totalDuration: _elapsed,
     );
 
-    // 루프 감지: 시작점에서 10m 이내로 돌아오면 자동 종료
+    // 루프 감지: 시작점에서 10m 이내로 돌아오면 loopCompleted 상태로 전환
     if (GeoUtils.detectLoop(newPath)) {
-      stopAndSave();
+      _timer?.cancel();
+      _gpsSub?.cancel();
+      _ref.read(locationServiceProvider).stopTracking();
+      state = state?.copyWith(status: RunStatus.loopCompleted);
     }
   }
 
@@ -67,6 +71,30 @@ class RunSessionNotifier extends StateNotifier<RunSession?> {
 
   void resumeRun() {
     state = state?.copyWith(status: RunStatus.running);
+  }
+
+  /// loopCompleted 상태에서 territory 클레임 + DB 저장 후 세션 반환
+  Future<RunSession?> saveLoopCompleted({Color? color}) async {
+    if (state == null || state!.status != RunStatus.loopCompleted) return null;
+    final completed = state!.copyWith(
+      status: RunStatus.completed,
+      endedAt: DateTime.now(),
+    );
+    state = completed;
+    await _ref.read(runRepositoryProvider).saveSession(completed);
+
+    if (completed.path.length >= 2) {
+      await _ref.read(claimTerritoryUseCaseProvider).call(
+        path: completed.path,
+        sessionId: completed.id,
+        color: color ?? const Color(0xFF2E7D32),
+      );
+    }
+    return completed;
+  }
+
+  void clearSession() {
+    state = null;
   }
 
   Future<void> stopAndSave() async {

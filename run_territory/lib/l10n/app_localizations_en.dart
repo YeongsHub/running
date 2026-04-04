@@ -12,7 +12,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navHome => 'Home';
 
   @override
-  String get navMap => 'Map';
+  String get navMap => 'My Territory';
 
   @override
   String get navRun => 'Run';
@@ -113,4 +113,81 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get paceUnitImperial => 'min/mi';
+
+  @override
+  String get planFree => 'Free';
+
+  @override
+  String get planPro => 'Pro';
+
+  @override
+  String get upgradeToPro => 'Upgrade to Pro';
+
+  @override
+  String get proFeatures => 'Pro Features';
+
+  @override
+  String get proFeatureMultiplayer => 'Multiplayer Map';
+
+  @override
+  String get proFeatureMultiplayerDesc =>
+      'See other players\' territories in real time';
+
+  @override
+  String get proFeatureLeaderboard => 'Leaderboards';
+
+  @override
+  String get proFeatureLeaderboardDesc =>
+      'Compete globally and rank by territory area';
+
+  @override
+  String get proFeatureCloudSync => 'Cloud Sync';
+
+  @override
+  String get proFeatureCloudSyncDesc =>
+      'Back up your runs and territories across devices';
+
+  @override
+  String get proFeatureFriends => 'Friends';
+
+  @override
+  String get proFeatureFriendsDesc =>
+      'Challenge friends and see their territories';
+
+  @override
+  String get proPrice => 'Unlock Pro — \$4.99 (one-time)';
+
+  @override
+  String get proUpgradeConfirmTitle => 'Upgrade to Pro?';
+
+  @override
+  String get proUpgradeConfirmMessage =>
+      'This is a simulated purchase. Tap Confirm to unlock all Pro features.';
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get proUnlocked => 'Pro unlocked! Enjoy all features.';
+
+  @override
+  String get proAlreadyOwned => 'You already own Pro.';
+
+  @override
+  String get proLockedHint => 'Pro feature — tap to upgrade';
+
+  @override
+  String get currentPlan => 'Current Plan';
+
+  @override
+  String get territoryClaimed => 'Territory Claimed!';
+
+  @override
+  String get areaLabel => 'Area';
+
+  @override
+  String get done => 'Done';
+
+  @override
+  String get loopCompleted => 'Loop Completed!';
 }

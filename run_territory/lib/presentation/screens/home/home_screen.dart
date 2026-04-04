@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:run_territory/app.dart';
 import 'package:run_territory/core/providers/app_providers.dart';
+import 'package:run_territory/core/theme/app_theme.dart';
 import 'package:run_territory/core/utils/format_utils.dart';
 import 'package:run_territory/l10n/app_localizations.dart';
-import 'package:run_territory/presentation/screens/profile/profile_screen.dart';
 import 'package:run_territory/presentation/screens/settings/settings_screen.dart';
 
 // runHistoryProvider 결과를 재사용 — DB 중복 쿼리 방지
@@ -29,39 +29,229 @@ class HomeScreen extends ConsumerWidget {
     final statsAsync = ref.watch(statsProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Territory Run')),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          const SizedBox(height: 8),
-          FilledButton.icon(
-            onPressed: () => ref.read(selectedTabProvider.notifier).state = 2,
-            icon: const Icon(Icons.directions_run, size: 28),
-            label: Text(l.startRun, style: const TextStyle(fontSize: 18)),
-            style: FilledButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 20),
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(child: _buildHeader(context, ref)),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                const SizedBox(height: 20),
+                _buildStartButton(context, ref, l),
+                const SizedBox(height: 28),
+                const _SectionHeader(title: 'Activity'),
+                const SizedBox(height: 12),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: const RunContributionGraph(),
+                  ),
+                ),
+                const SizedBox(height: 28),
+                _SectionHeader(title: l.myStats),
+                const SizedBox(height: 12),
+                statsAsync.when(
+                  data: (stats) => _buildStatsRow(context, l, stats, imperial),
+                  loading: () => const Center(child: CircularProgressIndicator()),
+                  error: (_, __) => Text(l.statsLoadFailed),
+                ),
+                const SizedBox(height: 24),
+              ]),
             ),
-          ),
-          const SizedBox(height: 24),
-          // 잔디 그래프
-          const RunContributionGraph(),
-          const SizedBox(height: 24),
-          Text(l.myStats, style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(height: 12),
-          statsAsync.when(
-            data: (stats) => Column(
-              children: [
-                _QuickStat(label: l.totalRuns, value: l.totalRunsValue(stats.totalRuns)),
-                const SizedBox(height: 8),
-                _QuickStat(label: l.totalDistance, value: FormatUtils.formatTotalDistance(stats.totalDistanceKm, imperial: imperial)),
-                const SizedBox(height: 8),
-                _QuickStat(label: l.totalArea, value: FormatUtils.formatArea(stats.totalAreaM2, imperial: imperial)),
-              ],
-            ),
-            loading: () => const CircularProgressIndicator(),
-            error: (_, __) => Text(l.statsLoadFailed),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context, WidgetRef ref) {
+    return Container(
+      padding: EdgeInsets.only(
+        top: MediaQuery.of(context).padding.top + 16,
+        left: 20,
+        right: 16,
+        bottom: 20,
+      ),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [AppTheme.primaryViolet, AppTheme.primaryVioletDark],
+        ),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Territory Run',
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: -0.5,
+                      ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  'Claim your ground',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Colors.white70,
+                      ),
+                ),
+              ],
+            ),
+          ),
+          GestureDetector(
+            onTap: () => ref.read(selectedTabProvider.notifier).state = 4,
+            child: const CircleAvatar(
+              radius: 22,
+              backgroundColor: Colors.white24,
+              child: Icon(Icons.settings, color: Colors.white, size: 24),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStartButton(BuildContext context, WidgetRef ref, AppLocalizations l) {
+    return GestureDetector(
+      onTap: () => ref.read(selectedTabProvider.notifier).state = 2,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        height: 90,
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [AppTheme.primaryViolet, AppTheme.primaryVioletDark],
+          ),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: AppTheme.primaryViolet.withValues(alpha: 0.45),
+              blurRadius: 16,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.directions_run, color: Colors.white, size: 36),
+            const SizedBox(width: 14),
+            Text(
+              l.startRun,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 0.5,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatsRow(
+    BuildContext context,
+    AppLocalizations l,
+    dynamic stats,
+    bool imperial,
+  ) {
+    return Row(
+      children: [
+        Expanded(
+          child: _CompactStatCard(
+            label: l.totalRuns,
+            value: l.totalRunsValue(stats.totalRuns),
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: _CompactStatCard(
+            label: l.totalDistance,
+            value: FormatUtils.formatTotalDistance(stats.totalDistanceKm, imperial: imperial),
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: _CompactStatCard(
+            label: l.totalArea,
+            value: FormatUtils.formatArea(stats.totalAreaM2, imperial: imperial),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _SectionHeader extends StatelessWidget {
+  final String title;
+  const _SectionHeader({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          width: 4,
+          height: 20,
+          decoration: BoxDecoration(
+            color: AppTheme.primaryViolet,
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+        const SizedBox(width: 10),
+        Text(title, style: Theme.of(context).textTheme.titleMedium),
+      ],
+    );
+  }
+}
+
+class _CompactStatCard extends StatelessWidget {
+  final String label;
+  final String value;
+  const _CompactStatCard({required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+        decoration: BoxDecoration(
+          color: AppTheme.primaryViolet.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: Colors.grey[600],
+                  ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 6),
+            Text(
+              value,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.primaryViolet,
+                  ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -72,10 +262,10 @@ class RunContributionGraph extends ConsumerWidget {
 
   static const int _weeks = 16;
   static const double _cellSize = 12.0;
-  static const double _cellGap = 4.0; // 반드시 짝수 — margin: _cellGap/2 = 2.0 (정수 픽셀)
+  static const double _cellGap = 4.0;
 
   static Color _cellColor(double km, Color base) {
-    if (km == 0) return Colors.grey.shade200;
+    if (km == 0) return AppTheme.surfaceContainerHighest;
     if (km <= 5) return base.withValues(alpha: 0.25);
     if (km <= 10) return base.withValues(alpha: 0.5);
     if (km <= 15) return base.withValues(alpha: 0.75);
@@ -93,21 +283,22 @@ class RunContributionGraph extends ConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Activity', style: Theme.of(context).textTheme.titleMedium),
-            // 범례
+            Text('Activity', style: Theme.of(context).textTheme.labelMedium),
             Row(
               children: [
                 Text('0km', style: Theme.of(context).textTheme.labelSmall),
                 const SizedBox(width: 4),
-                ...[ 0.0, 0.25, 0.5, 0.75, 1.0 ].map((alpha) => Container(
-                  width: _cellSize,
-                  height: _cellSize,
-                  margin: const EdgeInsets.symmetric(horizontal: 1),
-                  decoration: BoxDecoration(
-                    color: alpha == 0 ? Colors.grey.shade200 : baseColor.withValues(alpha: alpha),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                )),
+                ...[0.0, 0.25, 0.5, 0.75, 1.0].map((alpha) => Container(
+                      width: _cellSize,
+                      height: _cellSize,
+                      margin: const EdgeInsets.symmetric(horizontal: 1),
+                      decoration: BoxDecoration(
+                        color: alpha == 0
+                            ? AppTheme.surfaceContainerHighest
+                            : baseColor.withValues(alpha: alpha),
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    )),
                 const SizedBox(width: 4),
                 Text('15km+', style: Theme.of(context).textTheme.labelSmall),
               ],
@@ -117,29 +308,30 @@ class RunContributionGraph extends ConsumerWidget {
         const SizedBox(height: 8),
         dailyAsync.when(
           data: (dailyKm) => _buildGrid(context, dailyKm, baseColor),
-          loading: () => const SizedBox(height: 100, child: Center(child: CircularProgressIndicator())),
+          loading: () => const SizedBox(
+              height: 100, child: Center(child: CircularProgressIndicator())),
           error: (_, __) => const SizedBox.shrink(),
         ),
       ],
     );
   }
 
-  Widget _buildGrid(BuildContext context, Map<DateTime, double> dailyKm, Color baseColor) {
+  Widget _buildGrid(
+      BuildContext context, Map<DateTime, double> dailyKm, Color baseColor) {
     final today = DateTime.now();
     final todayDate = DateTime(today.year, today.month, today.day);
-
-    // 오늘 기준으로 (weeks)주 전 월요일부터 시작
     final daysBack = (todayDate.weekday - 1) + (_weeks - 1) * 7;
     final startDate = todayDate.subtract(Duration(days: daysBack));
 
-    // 월 라벨 계산 (어느 열에서 월이 바뀌는지)
     final monthLabels = <int, String>{};
     for (int w = 0; w < _weeks; w++) {
       final weekStart = startDate.add(Duration(days: w * 7));
       final weekEnd = weekStart.add(const Duration(days: 6));
       if (w == 0 || weekStart.month != weekEnd.month || weekStart.day <= 7) {
         final date = w == 0 ? weekStart : weekEnd;
-        if (w == 0 || monthLabels.isEmpty || monthLabels.values.last != _monthLabel(date)) {
+        if (w == 0 ||
+            monthLabels.isEmpty ||
+            monthLabels.values.last != _monthLabel(date)) {
           monthLabels[w] = _monthLabel(date);
         }
       }
@@ -152,46 +344,43 @@ class RunContributionGraph extends ConsumerWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 요일 라벨
           Column(
             children: [
-              SizedBox(height: _cellSize + _cellGap), // 월 라벨 공간
+              SizedBox(height: _cellSize + _cellGap),
               ...List.generate(7, (i) => SizedBox(
-                height: _cellSize + _cellGap,
-                child: Text(
-                  dayLabels[i],
-                  style: Theme.of(context).textTheme.labelSmall,
-                ),
-              )),
+                    height: _cellSize + _cellGap,
+                    child: Text(dayLabels[i],
+                        style: Theme.of(context).textTheme.labelSmall),
+                  )),
             ],
           ),
           const SizedBox(width: _cellGap),
-          // 주 컬럼들
           ...List.generate(_weeks, (w) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // 월 라벨
                 SizedBox(
                   height: _cellSize + _cellGap,
                   child: monthLabels.containsKey(w)
-                      ? Text(monthLabels[w]!, style: Theme.of(context).textTheme.labelSmall)
+                      ? Text(monthLabels[w]!,
+                          style: Theme.of(context).textTheme.labelSmall)
                       : null,
                 ),
-                // 7일 셀
                 ...List.generate(7, (d) {
                   final date = startDate.add(Duration(days: w * 7 + d));
                   final isFuture = date.isAfter(todayDate);
                   final km = isFuture ? 0.0 : (dailyKm[date] ?? 0.0);
-
                   return Tooltip(
-                    message: '${date.month}/${date.day}  ${km > 0 ? "${km.toStringAsFixed(1)}km" : ""}',
+                    message:
+                        '${date.month}/${date.day}  ${km > 0 ? "${km.toStringAsFixed(1)}km" : ""}',
                     child: Container(
                       width: _cellSize,
                       height: _cellSize,
                       margin: const EdgeInsets.all(_cellGap / 2),
                       decoration: BoxDecoration(
-                        color: isFuture ? Colors.transparent : _cellColor(km, baseColor),
+                        color: isFuture
+                            ? Colors.transparent
+                            : _cellColor(km, baseColor),
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -206,20 +395,4 @@ class RunContributionGraph extends ConsumerWidget {
   }
 
   static String _monthLabel(DateTime date) => DateFormat('MMM').format(date);
-}
-
-class _QuickStat extends StatelessWidget {
-  final String label;
-  final String value;
-  const _QuickStat({required this.label, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        title: Text(label),
-        trailing: Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-      ),
-    );
-  }
 }

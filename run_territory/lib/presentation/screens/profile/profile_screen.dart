@@ -3,10 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:run_territory/core/providers/app_providers.dart';
 import 'package:run_territory/core/utils/format_utils.dart';
 
-final statsProvider = FutureProvider((ref) async {
-  return ref.watch(runRepositoryProvider).getStats();
-});
-
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 

@@ -109,7 +109,7 @@ abstract class AppLocalizations {
   /// No description provided for @navMap.
   ///
   /// In en, this message translates to:
-  /// **'Map'**
+  /// **'My Territory'**
   String get navMap;
 
   /// No description provided for @navRun.
@@ -303,6 +303,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'min/mi'**
   String get paceUnitImperial;
+
+  /// No description provided for @planFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get planFree;
+
+  /// No description provided for @planPro.
+  ///
+  /// In en, this message translates to:
+  /// **'Pro'**
+  String get planPro;
+
+  /// No description provided for @upgradeToPro.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Pro'**
+  String get upgradeToPro;
+
+  /// No description provided for @proFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Pro Features'**
+  String get proFeatures;
+
+  /// No description provided for @proFeatureMultiplayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Multiplayer Map'**
+  String get proFeatureMultiplayer;
+
+  /// No description provided for @proFeatureMultiplayerDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'See other players\' territories in real time'**
+  String get proFeatureMultiplayerDesc;
+
+  /// No description provided for @proFeatureLeaderboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Leaderboards'**
+  String get proFeatureLeaderboard;
+
+  /// No description provided for @proFeatureLeaderboardDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Compete globally and rank by territory area'**
+  String get proFeatureLeaderboardDesc;
+
+  /// No description provided for @proFeatureCloudSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud Sync'**
+  String get proFeatureCloudSync;
+
+  /// No description provided for @proFeatureCloudSyncDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Back up your runs and territories across devices'**
+  String get proFeatureCloudSyncDesc;
+
+  /// No description provided for @proFeatureFriends.
+  ///
+  /// In en, this message translates to:
+  /// **'Friends'**
+  String get proFeatureFriends;
+
+  /// No description provided for @proFeatureFriendsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Challenge friends and see their territories'**
+  String get proFeatureFriendsDesc;
+
+  /// No description provided for @proPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock Pro — \$4.99 (one-time)'**
+  String get proPrice;
+
+  /// No description provided for @proUpgradeConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Pro?'**
+  String get proUpgradeConfirmTitle;
+
+  /// No description provided for @proUpgradeConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This is a simulated purchase. Tap Confirm to unlock all Pro features.'**
+  String get proUpgradeConfirmMessage;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @proUnlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Pro unlocked! Enjoy all features.'**
+  String get proUnlocked;
+
+  /// No description provided for @proAlreadyOwned.
+  ///
+  /// In en, this message translates to:
+  /// **'You already own Pro.'**
+  String get proAlreadyOwned;
+
+  /// No description provided for @proLockedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pro feature — tap to upgrade'**
+  String get proLockedHint;
+
+  /// No description provided for @currentPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Plan'**
+  String get currentPlan;
+
+  /// No description provided for @territoryClaimed.
+  ///
+  /// In en, this message translates to:
+  /// **'Territory Claimed!'**
+  String get territoryClaimed;
+
+  /// No description provided for @areaLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Area'**
+  String get areaLabel;
+
+  /// No description provided for @done.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get done;
+
+  /// No description provided for @loopCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Loop Completed!'**
+  String get loopCompleted;
 }
 
 class _AppLocalizationsDelegate

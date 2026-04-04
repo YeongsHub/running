@@ -12,7 +12,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get navHome => 'Start';
 
   @override
-  String get navMap => 'Karte';
+  String get navMap => 'Mein Revier';
 
   @override
   String get navRun => 'Laufen';
@@ -113,4 +113,79 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get paceUnitImperial => 'min/mi';
+
+  @override
+  String get planFree => 'Free';
+
+  @override
+  String get planPro => 'Pro';
+
+  @override
+  String get upgradeToPro => 'Auf Pro upgraden';
+
+  @override
+  String get proFeatures => 'Pro-Funktionen';
+
+  @override
+  String get proFeatureMultiplayer => 'Multiplayer-Karte';
+
+  @override
+  String get proFeatureMultiplayerDesc =>
+      'Gebiete anderer Spieler in Echtzeit sehen';
+
+  @override
+  String get proFeatureLeaderboard => 'Bestenliste';
+
+  @override
+  String get proFeatureLeaderboardDesc => 'Global nach Gebietsfläche ranken';
+
+  @override
+  String get proFeatureCloudSync => 'Cloud-Synchronisation';
+
+  @override
+  String get proFeatureCloudSyncDesc =>
+      'Läufe und Gebiete geräteübergreifend sichern';
+
+  @override
+  String get proFeatureFriends => 'Freunde';
+
+  @override
+  String get proFeatureFriendsDesc => 'Mit Freunden um Gebiete konkurrieren';
+
+  @override
+  String get proPrice => 'Pro freischalten — 4,99 € (einmalig)';
+
+  @override
+  String get proUpgradeConfirmTitle => 'Auf Pro upgraden?';
+
+  @override
+  String get proUpgradeConfirmMessage =>
+      'Dies ist ein simulierter Kauf. Bestätigen zum Freischalten aller Pro-Funktionen.';
+
+  @override
+  String get confirm => 'Bestätigen';
+
+  @override
+  String get proUnlocked => 'Pro freigeschaltet! Viel Spaß.';
+
+  @override
+  String get proAlreadyOwned => 'Du besitzt bereits Pro.';
+
+  @override
+  String get proLockedHint => 'Pro-Funktion — tippen zum Upgraden';
+
+  @override
+  String get currentPlan => 'Aktueller Plan';
+
+  @override
+  String get territoryClaimed => 'Gebiet erobert!';
+
+  @override
+  String get areaLabel => 'Fläche';
+
+  @override
+  String get done => 'Fertig';
+
+  @override
+  String get loopCompleted => 'Runde abgeschlossen!';
 }

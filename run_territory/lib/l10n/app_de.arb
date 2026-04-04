@@ -2,7 +2,7 @@
   "@@locale": "de",
 
   "navHome": "Start",
-  "navMap": "Karte",
+  "navMap": "Mein Revier",
   "navRun": "Laufen",
   "navHistory": "Verlauf",
   "navSettings": "Einstellungen",
@@ -40,5 +40,31 @@
   "metric": "Metrisch (km, m)",
   "imperial": "Imperial (mi, ft)",
   "paceUnit": "min/km",
-  "paceUnitImperial": "min/mi"
+  "paceUnitImperial": "min/mi",
+
+  "planFree": "Free",
+  "planPro": "Pro",
+  "upgradeToPro": "Auf Pro upgraden",
+  "proFeatures": "Pro-Funktionen",
+  "proFeatureMultiplayer": "Multiplayer-Karte",
+  "proFeatureMultiplayerDesc": "Gebiete anderer Spieler in Echtzeit sehen",
+  "proFeatureLeaderboard": "Bestenliste",
+  "proFeatureLeaderboardDesc": "Global nach Gebietsfläche ranken",
+  "proFeatureCloudSync": "Cloud-Synchronisation",
+  "proFeatureCloudSyncDesc": "Läufe und Gebiete geräteübergreifend sichern",
+  "proFeatureFriends": "Freunde",
+  "proFeatureFriendsDesc": "Mit Freunden um Gebiete konkurrieren",
+  "proPrice": "Pro freischalten — 4,99 € (einmalig)",
+  "proUpgradeConfirmTitle": "Auf Pro upgraden?",
+  "proUpgradeConfirmMessage": "Dies ist ein simulierter Kauf. Bestätigen zum Freischalten aller Pro-Funktionen.",
+  "confirm": "Bestätigen",
+  "proUnlocked": "Pro freigeschaltet! Viel Spaß.",
+  "proAlreadyOwned": "Du besitzt bereits Pro.",
+  "proLockedHint": "Pro-Funktion — tippen zum Upgraden",
+  "currentPlan": "Aktueller Plan",
+
+  "territoryClaimed": "Gebiet erobert!",
+  "areaLabel": "Fläche",
+  "done": "Fertig",
+  "loopCompleted": "Runde abgeschlossen!"
 }

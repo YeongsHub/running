@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:run_territory/data/repositories/run_repository_impl.dart';
 import 'package:run_territory/data/repositories/territory_repository_impl.dart';
 import 'package:run_territory/data/sources/local/database_helper.dart';
@@ -43,3 +44,26 @@ final runHistoryProvider = FutureProvider<List<RunSession>>((ref) async {
 
 // false = 미터법(기본), true = 야드파운드법(미국)
 final useImperialProvider = StateProvider<bool>((ref) => false);
+
+final statsProvider = FutureProvider((ref) async {
+  return ref.watch(runRepositoryProvider).getStats();
+});
+
+// Pro 여부 — SharedPreferences로 영속
+class IsProNotifier extends AsyncNotifier<bool> {
+  static const _key = 'is_pro';
+
+  @override
+  Future<bool> build() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_key) ?? false;
+  }
+
+  Future<void> unlock() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_key, true);
+    state = const AsyncData(true);
+  }
+}
+
+final isProProvider = AsyncNotifierProvider<IsProNotifier, bool>(IsProNotifier.new);
