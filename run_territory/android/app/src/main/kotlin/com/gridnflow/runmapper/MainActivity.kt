@@ -1,4 +1,4 @@
-package com.runningapp.run_territory
+package com.gridnflow.runmapper
 
 import io.flutter.embedding.android.FlutterActivity
 
