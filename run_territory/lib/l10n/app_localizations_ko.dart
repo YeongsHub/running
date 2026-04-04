@@ -186,4 +186,10 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get loopCompleted => '루프 완주!';
+
+  @override
+  String get privacyPolicy => '개인정보처리방침';
+
+  @override
+  String get termsOfUse => '이용약관';
 }

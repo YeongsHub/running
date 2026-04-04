@@ -188,4 +188,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get loopCompleted => 'Runde abgeschlossen!';
+
+  @override
+  String get privacyPolicy => 'Datenschutzerklärung';
+
+  @override
+  String get termsOfUse => 'Nutzungsbedingungen';
 }

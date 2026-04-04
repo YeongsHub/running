@@ -68,5 +68,8 @@
   "territoryClaimed": "Territory Claimed!",
   "areaLabel": "Area",
   "done": "Done",
-  "loopCompleted": "Loop Completed!"
+  "loopCompleted": "Loop Completed!",
+
+  "privacyPolicy": "Privacy Policy",
+  "termsOfUse": "Terms of Use"
 }

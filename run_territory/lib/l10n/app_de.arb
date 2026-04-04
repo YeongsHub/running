@@ -66,5 +66,8 @@
   "territoryClaimed": "Gebiet erobert!",
   "areaLabel": "Fläche",
   "done": "Fertig",
-  "loopCompleted": "Runde abgeschlossen!"
+  "loopCompleted": "Runde abgeschlossen!",
+
+  "privacyPolicy": "Datenschutzerklärung",
+  "termsOfUse": "Nutzungsbedingungen"
 }

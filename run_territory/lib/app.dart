@@ -29,6 +29,15 @@ class RunTerritoryApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
+      localeResolutionCallback: (deviceLocale, supportedLocales) {
+        if (deviceLocale == null) return const Locale('en');
+        for (final supported in supportedLocales) {
+          if (supported.languageCode == deviceLocale.languageCode) {
+            return supported;
+          }
+        }
+        return const Locale('en');
+      },
       home: const MainShell(),
     );
   }

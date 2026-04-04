@@ -360,10 +360,14 @@ class RunContributionGraph extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
+                  width: _cellSize + _cellGap,
                   height: _cellSize + _cellGap,
                   child: monthLabels.containsKey(w)
                       ? Text(monthLabels[w]!,
-                          style: Theme.of(context).textTheme.labelSmall)
+                          style: Theme.of(context).textTheme.labelSmall,
+                          overflow: TextOverflow.visible,
+                          softWrap: false,
+                        )
                       : null,
                 ),
                 ...List.generate(7, (d) {

@@ -66,5 +66,8 @@
   "territoryClaimed": "영역 확보 완료!",
   "areaLabel": "면적",
   "done": "완료",
-  "loopCompleted": "루프 완주!"
+  "loopCompleted": "루프 완주!",
+
+  "privacyPolicy": "개인정보처리방침",
+  "termsOfUse": "이용약관"
 }

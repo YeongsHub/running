@@ -3,6 +3,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:run_territory/core/providers/app_providers.dart';
 import 'package:run_territory/l10n/app_localizations.dart';
+import 'package:run_territory/presentation/screens/legal/legal_screen.dart';
 import 'package:run_territory/presentation/screens/pro/upgrade_screen.dart';
 
 final userColorProvider = StateProvider<Color>((ref) => const Color(0xFFBF5FFF));
@@ -145,6 +146,23 @@ class SettingsScreen extends ConsumerWidget {
           const Divider(),
           const _PlanTile(),
           const SizedBox(height: 8),
+          ListTile(
+            leading: const Icon(Icons.privacy_tip_outlined),
+            title: Text(l.privacyPolicy),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => Navigator.push(context, MaterialPageRoute(
+              builder: (_) => const LegalScreen(type: LegalType.privacyPolicy),
+            )),
+          ),
+          ListTile(
+            leading: const Icon(Icons.gavel_outlined),
+            title: Text(l.termsOfUse),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => Navigator.push(context, MaterialPageRoute(
+              builder: (_) => const LegalScreen(type: LegalType.termsOfUse),
+            )),
+          ),
+          const Divider(),
           ListTile(
             leading: const Icon(Icons.info_outline),
             title: Text(l.version),

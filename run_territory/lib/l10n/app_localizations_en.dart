@@ -190,4 +190,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loopCompleted => 'Loop Completed!';
+
+  @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get termsOfUse => 'Terms of Use';
 }
