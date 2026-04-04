@@ -5,12 +5,11 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 class BannerAdWidget extends StatefulWidget {
   const BannerAdWidget({super.key});
 
-  // Test IDs — replace with real IDs before release
   static String get _adUnitId {
     if (Platform.isAndroid) {
-      return 'ca-app-pub-3940256099942544/6300978111';
+      return 'ca-app-pub-6139362725426823/6362941013';
     } else {
-      return 'ca-app-pub-3940256099942544/2934735716';
+      return 'ca-app-pub-3940256099942544/2934735716'; // iOS test ID — update when available
     }
   }
 

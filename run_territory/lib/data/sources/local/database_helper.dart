@@ -16,7 +16,13 @@ class DatabaseHelper {
   Future<Database> _initDb() async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, 'run_territory.db');
-    return openDatabase(path, version: 1, onCreate: _onCreate);
+    return openDatabase(path, version: 2, onCreate: _onCreate, onUpgrade: _onUpgrade);
+  }
+
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      await _createFriendsTable(db);
+    }
   }
 
   Future<void> _onCreate(Database db, int version) async {
@@ -61,5 +67,18 @@ class DatabaseHelper {
 
     await db.execute('CREATE INDEX idx_gps_session ON gps_points(session_id)');
     await db.execute('CREATE INDEX idx_territory_owner ON territories(owner_id)');
+    await _createFriendsTable(db);
+  }
+
+  Future<void> _createFriendsTable(Database db) async {
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS friends (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        color_hex TEXT NOT NULL,
+        territories_json TEXT NOT NULL DEFAULT '[]',
+        added_at INTEGER NOT NULL
+      )
+    ''');
   }
 }

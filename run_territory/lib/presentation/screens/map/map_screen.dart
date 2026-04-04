@@ -8,6 +8,7 @@ import 'package:run_territory/core/providers/app_providers.dart';
 import 'package:run_territory/domain/entities/gps_point.dart';
 import 'package:run_territory/domain/entities/run_session.dart';
 import 'package:run_territory/l10n/app_localizations.dart';
+import 'package:run_territory/presentation/screens/friends/friends_screen.dart';
 import 'package:run_territory/presentation/screens/map/map_providers.dart';
 import 'package:run_territory/presentation/screens/map/widgets/territory_layer.dart';
 import 'package:run_territory/presentation/screens/settings/settings_screen.dart';
@@ -28,8 +29,23 @@ class MapScreen extends ConsumerWidget {
       mapController.move(LatLng(pos.latitude, pos.longitude), MapConstants.defaultZoom);
     });
 
+    final isProAsync = ref.watch(isProProvider);
+    final isPro = isProAsync.valueOrNull ?? false;
+    final friendsAsync = ref.watch(friendsProvider);
+    final friends = friendsAsync.valueOrNull ?? [];
+
     return Scaffold(
-      appBar: AppBar(title: Text(l.navMap)),
+      appBar: AppBar(
+        title: Text(l.navMap),
+        actions: [
+          if (isPro)
+            IconButton(
+              icon: const Icon(Icons.group),
+              tooltip: 'Friends',
+              onPressed: () => FriendsScreen.show(context),
+            ),
+        ],
+      ),
       floatingActionButton: kDebugMode
           ? FloatingActionButton.extended(
               onPressed: () => _injectMockTerritory(context, ref),
@@ -57,6 +73,18 @@ class MapScreen extends ConsumerWidget {
                 loading: () => const SizedBox.shrink(),
                 error: (_, __) => const SizedBox.shrink(),
               ),
+              if (isPro && friends.isNotEmpty)
+                PolygonLayer(
+                  polygons: friends.expand((f) => f.territories.map((t) {
+                    final c = f.color;
+                    return Polygon(
+                      points: t.polygon.map((p) => LatLng(p[0], p[1])).toList(),
+                      color: c.withValues(alpha: 0.25),
+                      borderColor: c,
+                      borderStrokeWidth: 2.0,
+                    );
+                  })).toList(),
+                ),
               positionAsync.when(
                 data: (pos) => MarkerLayer(
                   markers: [
