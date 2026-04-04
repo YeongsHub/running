@@ -11,8 +11,17 @@ final locationServiceProvider = Provider<LocationService>((ref) {
   return service;
 });
 
-final currentPositionProvider = StreamProvider<GpsPoint>((ref) {
-  return ref.watch(locationServiceProvider).positionStream;
+final currentPositionProvider = StreamProvider<GpsPoint>((ref) async* {
+  final service = ref.watch(locationServiceProvider);
+
+  // 즉시 현재 위치 한 번 가져와서 지도 초기 위치 설정
+  final initial = await service.getCurrentPosition();
+  if (initial != null) yield initial;
+
+  // 이후 스트림으로 지속 업데이트 (달리기 중에만 흐름)
+  await for (final point in service.positionStream) {
+    yield point;
+  }
 });
 
 final mapControllerProvider = Provider<MapController>((ref) => MapController());

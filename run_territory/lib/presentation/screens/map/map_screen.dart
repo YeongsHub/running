@@ -25,8 +25,13 @@ class MapScreen extends ConsumerWidget {
     final territoriesAsync = ref.watch(territoriesProvider);
     final userColor = ref.watch(userColorProvider);
 
-    positionAsync.whenData((pos) {
-      mapController.move(LatLng(pos.latitude, pos.longitude), MapConstants.defaultZoom);
+    // 첫 위치 수신 시 지도 이동 (이후 사용자가 직접 지도 움직이면 따라가지 않음)
+    ref.listen(currentPositionProvider, (prev, next) {
+      if (prev == null || !prev.hasValue) {
+        next.whenData((pos) {
+          mapController.move(LatLng(pos.latitude, pos.longitude), MapConstants.defaultZoom);
+        });
+      }
     });
 
     final isProAsync = ref.watch(isProProvider);

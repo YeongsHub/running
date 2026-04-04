@@ -4,6 +4,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:run_territory/core/constants/map_constants.dart';
+import 'package:run_territory/core/utils/geo_utils.dart';
 import 'package:run_territory/domain/entities/run_session.dart';
 import 'package:run_territory/presentation/screens/map/map_providers.dart';
 import 'package:run_territory/presentation/screens/map/widgets/run_path_layer.dart';
@@ -22,6 +23,14 @@ class RunScreen extends ConsumerStatefulWidget {
 
 class _RunScreenState extends ConsumerState<RunScreen> {
   bool _navigating = false;
+  final _mapController = MapController();
+  bool _mapInitialized = false;
+
+  @override
+  void dispose() {
+    _mapController.dispose();
+    super.dispose();
+  }
 
   Future<void> _onLoopCompleted() async {
     if (_navigating) return;
@@ -48,6 +57,22 @@ class _RunScreenState extends ConsumerState<RunScreen> {
   Widget build(BuildContext context) {
     final session = ref.watch(runSessionProvider);
     final positionAsync = ref.watch(currentPositionProvider);
+    final userColor = ref.watch(userColorProvider);
+
+    // 달리는 중 경로로 미리보기 폴리곤 생성 (최소 10포인트 이상)
+    final previewPolygon = (session != null && session.path.length >= 10)
+        ? GeoUtils.pathToEnclosedPolygon(session.path)
+        : null;
+
+    // 첫 위치 수신 시 지도 이동
+    ref.listen(currentPositionProvider, (prev, next) {
+      if (!_mapInitialized) {
+        next.whenData((pos) {
+          _mapInitialized = true;
+          _mapController.move(LatLng(pos.latitude, pos.longitude), MapConstants.defaultZoom);
+        });
+      }
+    });
 
     // loopCompleted 감지
     ref.listen<RunSession?>(runSessionProvider, (prev, next) {
@@ -64,12 +89,9 @@ class _RunScreenState extends ConsumerState<RunScreen> {
             children: [
               Expanded(
                 child: FlutterMap(
-                  options: MapOptions(
-                    initialCenter: positionAsync.when(
-                      data: (p) => LatLng(p.latitude, p.longitude),
-                      loading: () => const LatLng(37.5665, 126.9780),
-                      error: (_, __) => const LatLng(37.5665, 126.9780),
-                    ),
+                  mapController: _mapController,
+                  options: const MapOptions(
+                    initialCenter: LatLng(0, 0),
                     initialZoom: MapConstants.defaultZoom,
                   ),
                   children: [
@@ -78,6 +100,19 @@ class _RunScreenState extends ConsumerState<RunScreen> {
                       userAgentPackageName: 'com.gridnflow.rundone',
                     ),
                     if (session != null) RunPathLayer(path: session.path),
+                    if (previewPolygon != null && previewPolygon.length >= 3)
+                      PolygonLayer(
+                        polygons: [
+                          Polygon(
+                            points: previewPolygon
+                                .map((p) => LatLng(p.latitude, p.longitude))
+                                .toList(),
+                            color: userColor.withValues(alpha: 0.20),
+                            borderColor: userColor.withValues(alpha: 0.5),
+                            borderStrokeWidth: 1.5,
+                          ),
+                        ],
+                      ),
                     positionAsync.when(
                       data: (pos) => MarkerLayer(
                         markers: [
