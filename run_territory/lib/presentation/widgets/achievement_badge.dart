@@ -27,8 +27,8 @@ class AchievementBadge extends StatelessWidget {
                 CircleAvatar(
                   radius: 28,
                   backgroundColor: unlocked
-                      ? theme.colorScheme.primary.withOpacity(0.2)
-                      : theme.colorScheme.onSurface.withOpacity(0.08),
+                      ? theme.colorScheme.primary.withValues(alpha: 0.2)
+                      : theme.colorScheme.onSurface.withValues(alpha: 0.08),
                   child: Text(
                     achievement.emoji,
                     style: TextStyle(
@@ -48,7 +48,7 @@ class AchievementBadge extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 color: unlocked
                     ? theme.colorScheme.onPrimaryContainer
-                    : theme.colorScheme.onSurface.withOpacity(0.5),
+                    : theme.colorScheme.onSurface.withValues(alpha: 0.5),
               ),
               textAlign: TextAlign.center,
               maxLines: 2,
@@ -59,8 +59,8 @@ class AchievementBadge extends StatelessWidget {
               achievement.description,
               style: theme.textTheme.bodySmall?.copyWith(
                 color: unlocked
-                    ? theme.colorScheme.onPrimaryContainer.withOpacity(0.7)
-                    : theme.colorScheme.onSurface.withOpacity(0.35),
+                    ? theme.colorScheme.onPrimaryContainer.withValues(alpha: 0.7)
+                    : theme.colorScheme.onSurface.withValues(alpha: 0.35),
               ),
               textAlign: TextAlign.center,
               maxLines: 2,

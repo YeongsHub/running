@@ -5,7 +5,7 @@ import 'package:run_territory/core/providers/app_providers.dart';
 import 'package:run_territory/l10n/app_localizations.dart';
 import 'package:run_territory/presentation/screens/pro/upgrade_screen.dart';
 
-final userColorProvider = StateProvider<Color>((ref) => const Color(0xFF2E7D32));
+final userColorProvider = StateProvider<Color>((ref) => const Color(0xFFBF5FFF));
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});

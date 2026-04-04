@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:run_territory/core/providers/app_providers.dart';
 import 'package:run_territory/domain/entities/achievement.dart';
-import 'package:run_territory/domain/entities/run_stats.dart';
 import 'package:run_territory/domain/usecases/check_achievements.dart';
 import 'package:run_territory/presentation/widgets/achievement_badge.dart';
 
@@ -12,11 +11,9 @@ final _checkAchievementsUseCaseProvider = Provider(
 
 final achievementsProvider = FutureProvider<List<Achievement>>((ref) async {
   final statsAsync = await ref.watch(statsProvider.future);
-  final territories = await ref.watch(
-    getMyTerritoriesUseCaseProvider,
-  ).call('local_user');
+  final territories = await ref.watch(getMyTerritoriesUseCaseProvider).call();
 
-  final stats = statsAsync ?? RunStats.empty;
+  final stats = statsAsync;
   final useCase = ref.read(_checkAchievementsUseCaseProvider);
 
   return useCase(stats: stats, territoryCount: territories.length);

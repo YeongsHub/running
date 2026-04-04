@@ -18,7 +18,7 @@ class ControlButtons extends ConsumerWidget {
       return _BigButton(
         label: l.startRun,
         icon: Icons.play_arrow,
-        color: Colors.green,
+        color: const Color(0xFFBF5FFF),
         onTap: notifier.startRun,
       );
     }
@@ -34,7 +34,7 @@ class ControlButtons extends ConsumerWidget {
         if (status == RunStatus.running)
           _BigButton(label: l.pause, icon: Icons.pause, color: Colors.orange, onTap: notifier.pauseRun)
         else
-          _BigButton(label: l.resume, icon: Icons.play_arrow, color: Colors.green, onTap: notifier.resumeRun),
+          _BigButton(label: l.resume, icon: Icons.play_arrow, color: const Color(0xFFBF5FFF), onTap: notifier.resumeRun),
         _BigButton(
           label: l.stop,
           icon: Icons.stop,

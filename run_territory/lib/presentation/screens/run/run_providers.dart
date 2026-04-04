@@ -87,7 +87,7 @@ class RunSessionNotifier extends StateNotifier<RunSession?> {
       await _ref.read(claimTerritoryUseCaseProvider).call(
         path: completed.path,
         sessionId: completed.id,
-        color: color ?? const Color(0xFF2E7D32),
+        color: color ?? const Color(0xFFBF5FFF),
       );
     }
     return completed;
