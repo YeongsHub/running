@@ -8,6 +8,7 @@ import 'package:run_territory/presentation/screens/map/map_screen.dart';
 import 'package:run_territory/presentation/screens/run/run_screen.dart';
 import 'package:run_territory/presentation/screens/history/history_screen.dart';
 import 'package:run_territory/presentation/screens/settings/settings_screen.dart';
+import 'package:run_territory/presentation/widgets/banner_ad_widget.dart';
 
 final selectedTabProvider = StateProvider<int>((ref) => 0);
 
@@ -53,16 +54,22 @@ class MainShell extends ConsumerWidget {
         index: selectedTab,
         children: _screens,
       ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: selectedTab,
-        onDestinationSelected: (index) =>
-            ref.read(selectedTabProvider.notifier).state = index,
-        destinations: [
-          NavigationDestination(icon: const Icon(Icons.home), label: l.navHome),
-          NavigationDestination(icon: const Icon(Icons.terrain), label: l.navMap),
-          NavigationDestination(icon: const Icon(Icons.directions_run), label: l.navRun),
-          NavigationDestination(icon: const Icon(Icons.history), label: l.navHistory),
-          NavigationDestination(icon: const Icon(Icons.settings), label: l.navSettings),
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const BannerAdWidget(),
+          NavigationBar(
+            selectedIndex: selectedTab,
+            onDestinationSelected: (index) =>
+                ref.read(selectedTabProvider.notifier).state = index,
+            destinations: [
+              NavigationDestination(icon: const Icon(Icons.home), label: l.navHome),
+              NavigationDestination(icon: const Icon(Icons.terrain), label: l.navMap),
+              NavigationDestination(icon: const Icon(Icons.directions_run), label: l.navRun),
+              NavigationDestination(icon: const Icon(Icons.history), label: l.navHistory),
+              NavigationDestination(icon: const Icon(Icons.settings), label: l.navSettings),
+            ],
+          ),
         ],
       ),
     );

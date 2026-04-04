@@ -22,6 +22,7 @@ class MapScreen extends ConsumerWidget {
     final mapController = ref.watch(mapControllerProvider);
     final positionAsync = ref.watch(currentPositionProvider);
     final territoriesAsync = ref.watch(territoriesProvider);
+    final userColor = ref.watch(userColorProvider);
 
     positionAsync.whenData((pos) {
       mapController.move(LatLng(pos.latitude, pos.longitude), MapConstants.defaultZoom);
@@ -52,7 +53,7 @@ class MapScreen extends ConsumerWidget {
                 userAgentPackageName: 'com.runningapp.run_territory',
               ),
               territoriesAsync.when(
-                data: (territories) => TerritoryLayer(territories: territories),
+                data: (territories) => TerritoryLayer(territories: territories, colorOverride: userColor),
                 loading: () => const SizedBox.shrink(),
                 error: (_, __) => const SizedBox.shrink(),
               ),
